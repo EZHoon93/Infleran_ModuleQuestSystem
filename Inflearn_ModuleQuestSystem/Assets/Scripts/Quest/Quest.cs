@@ -73,7 +73,7 @@ public class Quest : ScriptableObject
     public bool IsComplatable => State == QuestState.WatingForCompletetion;
     public bool IsComplete => State == QuestState.Complete;
     public bool IsCancel => State == QuestState.Cancel;
-    public bool IsCancelabled => isCancelable && cancelConditions.All(x => x.IsPass(this));
+    public virtual bool IsCancelable => isCancelable && cancelConditions.All(x => x.IsPass(this));
     public bool IsAcceptable => acceptionConditions.All(x => x.IsPass(this));
     public event TaskSucessChangeHandler onTaskSuccessChanged;
     public event CompleteHandler onCompleted;
@@ -91,6 +91,8 @@ public class Quest : ScriptableObject
         }
 
         State = QuestState.Running;
+        currentTaskGroupIndex = 0;
+        Debug.Log(currentTaskGroupIndex +"/"+TaskGroups.Count);
         CurrentTaskGroup.Start();
     }
 
@@ -145,13 +147,21 @@ public class Quest : ScriptableObject
         // 보
     }
 
-    public void Cancel()
+    public virtual void Cancel()
     {
         CheckIsRunning();
-        Debug.Assert(IsCancelabled, "Thi Quest can't be cancled");
+        Debug.Assert(IsCancelable, "Thi Quest can't be cancled");
         State = QuestState.Cancel;
         onCanceled?.Invoke(this);
 
+    }
+
+    public Quest Clone()
+    {
+        var clone = Instantiate(this);
+        clone.taskGroups = taskGroups.Select(x => new TaskGroup(x)).ToArray();
+
+        return clone;
     }
 
     private void OnSuccessChanged(Task task , int currentSuccess, int prevSuccess)

@@ -15,8 +15,9 @@ MonoBehaviour:
   category: {fileID: 11400000, guid: 611fd5c98ad734bc8bd2c37d985ca02f, type: 2}
   codeName: Kill_The_Slime
   description: you have to kill slime
-  action: {fileID: 11400000, guid: e30de1ea98f1846bb84a62e45080bdd7, type: 2}
+  action: {fileID: 11400000, guid: b00c7726ec916498bafd3a8492c437d8, type: 2}
   targets:
   - {fileID: 11400000, guid: 5daa4b00ea522438f89f14fa37f6c2c2, type: 2}
   initializeSuccessValue: {fileID: 0}
-  needSucessToComplete: 0
+  needSucessToComplete: 5
+  canReceiveReportDuringCompletion: 0

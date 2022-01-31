@@ -14,11 +14,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   category: {fileID: 0}
   icon: {fileID: 0}
-  codeName: 
-  displayName: 
-  description: 
-  taskGroups: []
-  useAutoComplete: 0
+  codeName: Test
+  displayName: test
+  description: test quest
+  taskGroups:
+  - tasks:
+    - {fileID: 11400000, guid: c498f826d275a4bada2d0d3f7eb0f46a, type: 2}
+  - tasks:
+    - {fileID: 11400000, guid: c498f826d275a4bada2d0d3f7eb0f46a, type: 2}
+  useAutoComplete: 1
   isCancelable: 0
   acceptionConditions: []
   cancelConditions: []
