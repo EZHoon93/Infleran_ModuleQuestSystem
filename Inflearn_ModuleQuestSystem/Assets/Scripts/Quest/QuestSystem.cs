@@ -2,17 +2,26 @@
 using System.Collections.Generic;
 using System.Linq;
 
+using Newtonsoft.Json.Linq;
+
 using UnityEngine;
 
 public class QuestSystem : MonoBehaviour
 {
-    #region Event
-    public delegate void QuestRegisterHandler(Quest newQuest);
-    public delegate void QuestCompletedHandler(Quest newQuest);
-    public delegate void QuestCancelHandler(Quest newQuest);
-
-
+    #region Save Path
+    private const string kSaveRootPath = "questSystem";
+    private const string kActiveQuestsSavePath = "activeQuests";
+    private const string kCompletedQuestsSavePath = "completedQuests";
+    private const string kActiveAchievementsSavePath = "activeAchievement";
+    private const string kCompletedAchievementsSavePath = "completedAchievement";
     #endregion
+
+    #region Events
+    public delegate void QuestRegisteredHandler(Quest newQuest);
+    public delegate void QuestCompletedHandler(Quest quest);
+    public delegate void QuestCanceledHandler(Quest quest);
+    #endregion
+
     private static QuestSystem instance;
     private static bool isApplicationQuitting;
 
@@ -20,67 +29,78 @@ public class QuestSystem : MonoBehaviour
     {
         get
         {
-            if(!isApplicationQuitting && instance == null)
+            if (!isApplicationQuitting && instance == null)
             {
                 instance = FindObjectOfType<QuestSystem>();
-                if(instance == null)
+                if (instance == null)
                 {
                     instance = new GameObject("Quest System").AddComponent<QuestSystem>();
-                    DontDestroyOnLoad(instance.gameObject); 
+                    DontDestroyOnLoad(instance.gameObject);
                 }
             }
             return instance;
         }
     }
 
-    private List<Quest> aciveQuests = new List<Quest>();
+    private List<Quest> activeQuests = new List<Quest>();
     private List<Quest> completedQuests = new List<Quest>();
-    private List<Quest> activeAchivements = new List<Quest>();
+
+    private List<Quest> activeAchievements = new List<Quest>();
     private List<Quest> completedAchievements = new List<Quest>();
-    private QuestDatabase questDatabase;
+
+    private QuestDatabase questDatatabase;
     private QuestDatabase achievementDatabase;
 
-    public event QuestRegisterHandler onQuestRegistered;
+    public event QuestRegisteredHandler onQuestRegistered;
     public event QuestCompletedHandler onQuestCompleted;
-    public event QuestCancelHandler onQuestCanceled;
+    public event QuestCanceledHandler onQuestCanceled;
 
-    public event QuestRegisterHandler onAchievementRegistered;
+    public event QuestRegisteredHandler onAchievementRegistered;
     public event QuestCompletedHandler onAchievementCompleted;
 
-    public IReadOnlyCollection<Quest> ActiveQuests => aciveQuests;
-    public IReadOnlyCollection<Quest> CompletedQuests => completedQuests;
-    public IReadOnlyCollection<Quest> ActiveAchievements => activeAchivements;
-    public IReadOnlyCollection<Quest> CompletedAchievements=> completedAchievements;
+    public IReadOnlyList<Quest> ActiveQuests => activeQuests;
+    public IReadOnlyList<Quest> CompletedQuests => completedQuests;
+    public IReadOnlyList<Quest> ActiveAchievements => activeAchievements;
+    public IReadOnlyList<Quest> CompletedAchievements => completedAchievements;
 
     private void Awake()
     {
-        questDatabase = Resources.Load<QuestDatabase>("QuestDatabase");
+        questDatatabase = Resources.Load<QuestDatabase>("QuestDatabase");
         achievementDatabase = Resources.Load<QuestDatabase>("AchievementDatabase");
 
-        foreach(var achievement in achievementDatabase.Quests)
+        if (!Load())
         {
-            Register(achievement);
+            foreach (var achievement in achievementDatabase.Quests)
+                Register(achievement);
         }
     }
-    /// <summary>
-    /// 강한결합은 좋지않음, 클래스에서 복사본을 얻어옴
-    /// </summary>
+
+    private void OnApplicationQuit()
+    {
+        isApplicationQuitting = true;
+        Save();
+    }
+
     public Quest Register(Quest quest)
     {
         var newQuest = quest.Clone();
 
-        if(newQuest is Achievement)
+        if (newQuest is Achievement)
         {
             newQuest.onCompleted += OnAchievementCompleted;
-            activeAchivements.Add(newQuest);
+
+            activeAchievements.Add(newQuest);
+
             newQuest.OnRegister();
             onAchievementRegistered?.Invoke(newQuest);
         }
         else
         {
             newQuest.onCompleted += OnQuestCompleted;
-            newQuest.onCompleted += OnQuestCanceled;
-            aciveQuests.Add(newQuest);
+            newQuest.onCanceled += OnQuestCanceled;
+
+            activeQuests.Add(newQuest);
+
             newQuest.OnRegister();
             onQuestRegistered?.Invoke(newQuest);
         }
@@ -90,43 +110,115 @@ public class QuestSystem : MonoBehaviour
 
     public void ReceiveReport(string category, object target, int successCount)
     {
-        print($"{category} / {target}");
-        ReceiveReport(aciveQuests, category, target, successCount);
-        ReceiveReport(activeAchivements, category, target, successCount);
-
+        ReceiveReport(activeQuests, category, target, successCount);
+        ReceiveReport(activeAchievements, category, target, successCount);
     }
+
     public void ReceiveReport(Category category, TaskTarget target, int successCount)
+        => ReceiveReport(category.CodeName, target.Value, successCount);
+
+    private void ReceiveReport(List<Quest> quests, string category, object target, int successCount)
     {
-        ReceiveReport(category.CodeName, target.Value, successCount);
-    }
-    //내부에서사용
-    private void ReceiveReport(List<Quest> quests , string category , object target , int successCount)
-    {
-        foreach (var quest in quests)
+        foreach (var quest in quests.ToArray())
+        {
             quest.ReceiveReport(category, target, successCount);
-    }
-    //Quest가 목록에있는지 확인
-    public bool ContainsInActiveQuests(Quest quest)
-    {
-        return ActiveQuests.Any(x => x.CodeName == quest.CodeName);
-    }
-    public bool ContainsInCompleteQuests(Quest quest)
-    {
-        return completedQuests.Any(x => x.CodeName == quest.CodeName);
-    }
-    public bool ContainsInActiveAchievements(Quest quest)
-    {
-        return activeAchivements.Any(x => x.CodeName == quest.CodeName);
-    }
-    public bool ContainsInCompletedAchievements(Quest quest)
-    {
-        return completedAchievements.Any(x => x.CodeName == quest.CodeName);
+        }
     }
 
-    #region CallBack
+    public void CompleteWaitingQuests()
+    {
+        foreach (var quest in activeQuests.ToList())
+        {
+            if (quest.IsComplatable)
+                quest.Complete();
+        }
+    }
+
+    public bool ContainsInActiveQuests(Quest quest) => activeQuests.Any(x => x.CodeName == quest.CodeName);
+
+    public bool ContainsInCompleteQuests(Quest quest) => completedQuests.Any(x => x.CodeName == quest.CodeName);
+
+    public bool ContainsInActiveAchievements(Quest quest) => activeAchievements.Any(x => x.CodeName == quest.CodeName);
+
+    public bool ContainsInCompletedAchievements(Quest quest) => completedAchievements.Any(x => x.CodeName == quest.CodeName);
+
+    public void Save()
+    {
+        var root = new JObject();
+        //키값이 변경될수있으므로 키값들은 static으로 선언
+        root.Add(kActiveQuestsSavePath, CreateSaveDatas(activeQuests));
+        root.Add(kCompletedQuestsSavePath, CreateSaveDatas(completedQuests));
+        root.Add(kActiveAchievementsSavePath, CreateSaveDatas(activeAchievements));
+        root.Add(kCompletedAchievementsSavePath, CreateSaveDatas(completedAchievements));
+        print("Save ");
+        PlayerPrefs.SetString(kSaveRootPath, root.ToString());
+        PlayerPrefs.Save();
+    }
+
+    public bool Load()
+    {
+        if (PlayerPrefs.HasKey(kSaveRootPath))
+        {
+            var root = JObject.Parse(PlayerPrefs.GetString(kSaveRootPath));
+
+            LoadSaveDatas(root[kActiveQuestsSavePath], questDatatabase, LoadActiveQuest);
+            LoadSaveDatas(root[kCompletedQuestsSavePath], questDatatabase, LoadCompletedQuest);
+
+            LoadSaveDatas(root[kActiveAchievementsSavePath], achievementDatabase, LoadActiveQuest);
+            LoadSaveDatas(root[kCompletedAchievementsSavePath], achievementDatabase, LoadCompletedQuest);
+
+            return true;
+        }
+        else
+            return false;
+    }
+
+    private JArray CreateSaveDatas(IReadOnlyList<Quest> quests)
+    {
+        var saveDatas = new JArray();
+        foreach (var quest in quests)
+        {
+            if (quest.IsSavable)
+                saveDatas.Add(JObject.FromObject(quest.ToSaveData()));
+        }
+        return saveDatas;
+    }
+
+    private void LoadSaveDatas(JToken datasToken, QuestDatabase database, System.Action<QuestSaveData, Quest> onSuccess)
+    {
+        var datas = datasToken as JArray;
+        foreach (var data in datas)
+        {
+            var saveData = data.ToObject<QuestSaveData>();
+            var quest = database.FindQuestBy(saveData.codeName);
+            onSuccess.Invoke(saveData, quest);
+        }
+    }
+
+    /// <summary>
+    /// Load 불러온 Quest 처리
+    /// </summary>
+    private void LoadActiveQuest(QuestSaveData saveData, Quest quest)
+    {
+        var newQuest = Register(quest);
+        newQuest.LoadFrom(saveData);
+    }
+
+    private void LoadCompletedQuest(QuestSaveData saveData, Quest quest)
+    {
+        var newQuest = quest.Clone();
+        newQuest.LoadFrom(saveData);
+
+        if (newQuest is Achievement)
+            completedAchievements.Add(newQuest);
+        else
+            completedQuests.Add(newQuest);
+    }
+
+    #region Callback
     private void OnQuestCompleted(Quest quest)
     {
-        aciveQuests.Remove(quest);
+        activeQuests.Remove(quest);
         completedQuests.Add(quest);
 
         onQuestCompleted?.Invoke(quest);
@@ -134,7 +226,7 @@ public class QuestSystem : MonoBehaviour
 
     private void OnQuestCanceled(Quest quest)
     {
-        aciveQuests.Remove(quest);
+        activeQuests.Remove(quest);
         onQuestCanceled?.Invoke(quest);
 
         Destroy(quest, Time.deltaTime);
@@ -142,11 +234,10 @@ public class QuestSystem : MonoBehaviour
 
     private void OnAchievementCompleted(Quest achievement)
     {
-        activeAchivements.Remove(achievement);
+        activeAchievements.Remove(achievement);
         completedAchievements.Add(achievement);
 
         onAchievementCompleted?.Invoke(achievement);
     }
     #endregion
-
 }

@@ -46,21 +46,21 @@ public class Task : ScriptableObject
     private TaskState state;
     private int currentSuccess;
     public StateChangeHandler onStateChanged;
-    public SucessChangeHandler onSuccesChanged;
+    public SucessChangeHandler onSuccessChanged;
 
     public Category Category => category;
 
     public int CurrentSuccess
     {
         get => currentSuccess;
-        private set
+        set
         {
             var prevSucess = currentSuccess;
             currentSuccess = Mathf.Clamp(value ,0 , needSucessToComplete);
             if(currentSuccess != prevSucess)
             {
                 State = currentSuccess == needSucessToComplete ? TaskState.Complete : TaskState.Running;
-                onSuccesChanged?.Invoke(this, currentSuccess, prevSucess);
+                onSuccessChanged?.Invoke(this, currentSuccess, prevSucess);
 
             }
         }
