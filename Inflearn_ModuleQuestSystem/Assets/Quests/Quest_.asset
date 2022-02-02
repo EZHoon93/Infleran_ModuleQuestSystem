@@ -20,9 +20,9 @@ MonoBehaviour:
   taskGroups:
   - tasks:
     - {fileID: 11400000, guid: c498f826d275a4bada2d0d3f7eb0f46a, type: 2}
-  - tasks:
-    - {fileID: 11400000, guid: c498f826d275a4bada2d0d3f7eb0f46a, type: 2}
+  rewards: []
   useAutoComplete: 1
   isCancelable: 0
+  isSavable: 1
   acceptionConditions: []
   cancelConditions: []
