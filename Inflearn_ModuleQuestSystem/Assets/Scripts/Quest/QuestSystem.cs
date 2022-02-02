@@ -23,8 +23,10 @@ public class QuestSystem : MonoBehaviour
     #endregion
 
     private static QuestSystem instance;
+
     private static bool isApplicationQuitting;
 
+    //싱글톤
     public static QuestSystem Instance
     {
         get
@@ -78,13 +80,16 @@ public class QuestSystem : MonoBehaviour
     private void OnApplicationQuit()
     {
         isApplicationQuitting = true;
+        //테스트하기위해 종료시 저장
         Save();
     }
 
     public Quest Register(Quest quest)
     {
+        //복사본을 만듬.
         var newQuest = quest.Clone();
 
+        //퀘스트의 종류.. achievement라면..
         if (newQuest is Achievement)
         {
             newQuest.onCompleted += OnAchievementCompleted;

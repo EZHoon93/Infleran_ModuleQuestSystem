@@ -27,7 +27,7 @@ public class Quest : ScriptableObject
     #endregion
 
     [SerializeField]
-    private Category category;
+    private Category category;  //분류 카테고리
     [SerializeField]
     private Sprite icon;
 
@@ -35,13 +35,13 @@ public class Quest : ScriptableObject
     [SerializeField]
     private string codeName;
     [SerializeField]
-    private string displayName;
+    private string displayName; 
     [SerializeField, TextArea]
     private string description;
 
     [Header("Task")]
     [SerializeField]
-    private TaskGroup[] taskGroups;
+    private TaskGroup[] taskGroups; //임무
 
     [Header("Reward")]
     [SerializeField]
@@ -53,7 +53,7 @@ public class Quest : ScriptableObject
     [SerializeField]
     private bool isCancelable;
     [SerializeField]
-    private bool isSavable;
+    private bool isSavable; //저장 여부 
 
     [Header("Condition")]
     [SerializeField]
@@ -84,6 +84,9 @@ public class Quest : ScriptableObject
     public event CanceledHandler onCanceled;
     public event NewTaskGroupHandler onNewTaskGroup;
 
+    /// <summary>
+    /// 퀘스트 등록 
+    /// </summary>
     public void OnRegister()
     {
         Debug.Assert(!IsRegistered, "This quest has already been registered.");
@@ -95,33 +98,41 @@ public class Quest : ScriptableObject
                 task.onSuccessChanged += OnSuccessChanged;
         }
 
-        State = QuestState.Running;
+        State = QuestState.Running;     //퀘스트 상태를 진행중으로 변경
         CurrentTaskGroup.Start();
     }
 
+    /// <summary>
+    /// 진행을 보고받음
+    /// </summary>
     public void ReceiveReport(string category, object target, int successCount)
     {
         Debug.Assert(IsRegistered, "This quest has already been registered.");
         Debug.Assert(!IsCancel, "This quest has been canceled.");
-
+        //완료된것이라면안받음
         if (IsComplete)
             return;
-
+        //현재 그룹에 보/
         CurrentTaskGroup.ReceiveReport(category, target, successCount);
-
+        //모든 임무가 완성됫다면 
         if (CurrentTaskGroup.IsAllTaskComplete)
         {
+            //현재임무가 마지막 임무라면
             if (currentTaskGroupIndex + 1 == taskGroups.Length)
             {
+                //보상대기. useAutoComple(자동 완성)이면 완료로 변경
                 State = QuestState.WaitingForCompletion;
                 if (useAutoComplete)
                     Complete();
             }
+            //임무가 더있다면
             else
             {
+                //현재그룹은 이전그룹으로등록후 인덱스 증가
                 var prevTasKGroup = taskGroups[currentTaskGroupIndex++];
                 prevTasKGroup.End();
                 CurrentTaskGroup.Start();
+                //현재그룹 이전그룹 , 새로운그룹인지? 이벤트콜백
                 onNewTaskGroup?.Invoke(this, CurrentTaskGroup, prevTasKGroup);
             }
         }
@@ -131,6 +142,7 @@ public class Quest : ScriptableObject
 
     public void Complete()
     {
+        //에디터에서만 발생. 에러확인 조건Conditnal사용.=>에디터만발생하
         CheckIsRunning();
 
         foreach (var taskGroup in taskGroups)
@@ -158,6 +170,7 @@ public class Quest : ScriptableObject
         onCanceled?.Invoke(this);
     }
 
+    //복사, 얕은복사로 진행한다. 변수공유방지를위
     public Quest Clone()
     {
         var clone = Instantiate(this);
@@ -178,16 +191,20 @@ public class Quest : ScriptableObject
         };
     }
 
+    //세이브된 퀘스트데이터를 갖고 현재 임무로변경, 진행 , 
+
     public void LoadFrom(QuestSaveData saveData)
     {
         State = saveData.state;
         currentTaskGroupIndex = saveData.taskGroupIndex;
+        //임무 복사
         for (int i = 0; i < currentTaskGroupIndex; i++)
         {
             var taskGroup = taskGroups[i];
             taskGroup.Start();
             taskGroup.Complete();
         }
+        //성공횟수 
         for (int i = 0; i < saveData.taskSuccessCounts.Length; i++)
         {
             CurrentTaskGroup.Start();
@@ -197,6 +214,7 @@ public class Quest : ScriptableObject
 
     private void OnSuccessChanged(Task task, int currentSuccess, int prevSuccess)
         => onTaskSuccessChanged?.Invoke(this, task, currentSuccess, prevSuccess);
+
 
     [Conditional("UNITY_EDITOR")]
     private void CheckIsRunning()
