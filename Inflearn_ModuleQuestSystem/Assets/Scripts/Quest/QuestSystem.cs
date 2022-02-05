@@ -81,7 +81,6 @@ public class QuestSystem : MonoBehaviour
     {
         isApplicationQuitting = true;
         //테스트하기위해 종료시 저장
-        Save();
     }
 
     public Quest Register(Quest quest)
