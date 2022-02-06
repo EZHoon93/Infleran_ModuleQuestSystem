@@ -170,6 +170,9 @@ public class Quest : ScriptableObject
         onCanceled?.Invoke(this);
     }
 
+    public bool ContainsTarget(object target) => taskGroups.Any(x => x.ContainsTarget(target));
+    public bool ContainsTarget(TaskTarget target) => ContainsTarget(target.Value);
+
     //복사, 얕은복사로 진행한다. 변수공유방지를위
     public Quest Clone()
     {
