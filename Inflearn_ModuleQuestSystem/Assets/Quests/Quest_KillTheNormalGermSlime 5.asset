@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   category: {fileID: 11400000, guid: 1b6b025e10c24465cabeba87ef7c6c11, type: 2}
   icon: {fileID: 0}
-  codeName: KILL_THE_NORMAL_GERM_SLIME5
+  codeName: KILL_THE_NORMAL_GERM_SLIME_5
   displayName: kill the normal germ slime
   description: you have to kill the noramla germ slime5
   taskGroups:

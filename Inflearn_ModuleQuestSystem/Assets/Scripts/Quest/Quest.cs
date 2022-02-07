@@ -151,7 +151,9 @@ public class Quest : ScriptableObject
         State = QuestState.Complete;
 
         foreach (var reward in rewards)
+        {
             reward.Give(this);
+        }
 
         onCompleted?.Invoke(this);
 

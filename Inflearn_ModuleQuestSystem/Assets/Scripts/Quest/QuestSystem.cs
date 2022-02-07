@@ -69,10 +69,9 @@ public class QuestSystem : MonoBehaviour
     {
         questDatatabase = Resources.Load<QuestDatabase>("QuestDatabase");
         achievementDatabase = Resources.Load<QuestDatabase>("AchievementDatabase");
-        var p =  PlayerPrefs.GetInt("boundScore", 0);
-        Debug.Log(p);
         if (!Load())
         {
+            print("BFFS");
             foreach (var achievement in achievementDatabase.Quests)
                 Register(achievement);
         }
@@ -143,7 +142,10 @@ public class QuestSystem : MonoBehaviour
         }
     }
 
-    public bool ContainsInActiveQuests(Quest quest) => activeQuests.Any(x => x.CodeName == quest.CodeName);
+    public bool ContainsInActiveQuests(Quest quest) {
+
+        return ActiveQuests.Any(x => x.CodeName == quest.CodeName);
+    }
 
     public bool ContainsInCompleteQuests(Quest quest) => completedQuests.Any(x => x.CodeName == quest.CodeName);
 
@@ -159,7 +161,6 @@ public class QuestSystem : MonoBehaviour
         root.Add(kCompletedQuestsSavePath, CreateSaveDatas(completedQuests));
         root.Add(kActiveAchievementsSavePath, CreateSaveDatas(activeAchievements));
         root.Add(kCompletedAchievementsSavePath, CreateSaveDatas(completedAchievements));
-        print("Save ");
         PlayerPrefs.SetString(kSaveRootPath, root.ToString());
         PlayerPrefs.Save();
     }
@@ -169,7 +170,6 @@ public class QuestSystem : MonoBehaviour
         if (PlayerPrefs.HasKey(kSaveRootPath))
         {
             var root = JObject.Parse(PlayerPrefs.GetString(kSaveRootPath));
-
             LoadSaveDatas(root[kActiveQuestsSavePath], questDatatabase, LoadActiveQuest);
             LoadSaveDatas(root[kCompletedQuestsSavePath], questDatatabase, LoadCompletedQuest);
 
@@ -188,7 +188,9 @@ public class QuestSystem : MonoBehaviour
         foreach (var quest in quests)
         {
             if (quest.IsSavable)
+            {
                 saveDatas.Add(JObject.FromObject(quest.ToSaveData()));
+            }
         }
         return saveDatas;
     }
@@ -217,7 +219,6 @@ public class QuestSystem : MonoBehaviour
     {
         var newQuest = quest.Clone();
         newQuest.LoadFrom(saveData);
-
         if (newQuest is Achievement)
             completedAchievements.Add(newQuest);
         else

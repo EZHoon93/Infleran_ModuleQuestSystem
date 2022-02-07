@@ -8,7 +8,6 @@ public class PointReward : Reward
     public override void Give(Quest quest)
     {
         GameSystem.Instance.AddScore(Quantity);
-        Debug.Log(Quantity);
         PlayerPrefs.SetInt("boundScore", Quantity);
         PlayerPrefs.Save();
     }

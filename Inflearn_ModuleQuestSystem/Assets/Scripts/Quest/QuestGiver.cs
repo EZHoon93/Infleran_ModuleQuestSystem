@@ -1,5 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+
 using UnityEngine;
 
 public class QuestGiver : MonoBehaviour
@@ -11,8 +13,11 @@ public class QuestGiver : MonoBehaviour
     {
         foreach(var quest in quests)
         {
-            if (quest.IsAcceptable && !QuestSystem.Instance.ContainsInActiveQuests(quest))
+            if (quest.IsAcceptable && !QuestSystem.Instance.ContainsInCompleteQuests(quest))
+            {
                 QuestSystem.Instance.Register(quest);
+            }
         }
+       
     }
 }
