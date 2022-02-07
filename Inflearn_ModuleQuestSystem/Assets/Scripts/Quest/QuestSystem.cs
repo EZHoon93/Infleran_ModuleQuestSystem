@@ -69,7 +69,8 @@ public class QuestSystem : MonoBehaviour
     {
         questDatatabase = Resources.Load<QuestDatabase>("QuestDatabase");
         achievementDatabase = Resources.Load<QuestDatabase>("AchievementDatabase");
-
+        var p =  PlayerPrefs.GetInt("boundScore", 0);
+        Debug.Log(p);
         if (!Load())
         {
             foreach (var achievement in achievementDatabase.Quests)
@@ -128,6 +129,10 @@ public class QuestSystem : MonoBehaviour
             quest.ReceiveReport(category, target, successCount);
         }
     }
+
+    /// <summary>
+    /// 완료 대기중인 퀘스트를 complete해등
+    /// </summary>
 
     public void CompleteWaitingQuests()
     {

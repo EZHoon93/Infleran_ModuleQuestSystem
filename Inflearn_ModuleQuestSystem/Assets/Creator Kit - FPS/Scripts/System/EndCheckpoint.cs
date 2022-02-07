@@ -14,6 +14,9 @@ public class EndCheckpoint : MonoBehaviour
             return;
         }
         questReporter.Report();
+        QuestSystem.Instance.CompleteWaitingQuests();
+        QuestSystem.Instance.Save();
+
         GameSystem.Instance.StopTimer();
         GameSystem.Instance.FinishRun();
         Destroy(gameObject);

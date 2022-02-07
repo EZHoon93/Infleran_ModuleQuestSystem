@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 38345104ada0b4d3ea6d89a1a8cd7042, type: 3}
+  m_Name: Quest_ShootByHealmatic-5
+  m_EditorClassIdentifier: 
+  category: {fileID: 11400000, guid: 5d2405686b8b74e378bcbf67248a6cb4, type: 2}
+  icon: {fileID: 0}
+  codeName: SHOOT_BY_HEAL_MATIC-5
+  displayName: Shoot
+  description: you have to shoot by healmatic
+  taskGroups:
+  - tasks:
+    - {fileID: 11400000, guid: 76a7ed088644f49d7af74f79a579eda0, type: 2}
+  rewards:
+  - {fileID: 11400000, guid: 6ca56c970ac0b412baad71341500b1cc, type: 2}
+  useAutoComplete: 0
+  isCancelable: 0
+  isSavable: 1
+  acceptionConditions: []
+  cancelConditions: []

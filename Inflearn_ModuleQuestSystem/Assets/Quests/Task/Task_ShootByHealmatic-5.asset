@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 34a8fad4dfd4f4aaaa64932fd815cb6a, type: 3}
+  m_Name: Task_ShootByHealmatic-5
+  m_EditorClassIdentifier: 
+  category: {fileID: 11400000, guid: 5d2405686b8b74e378bcbf67248a6cb4, type: 2}
+  codeName: SHOOT_BY_HEALMATIC-5
+  description: you have to shoot healmatic-5
+  action: {fileID: 11400000, guid: b00c7726ec916498bafd3a8492c437d8, type: 2}
+  targets:
+  - {fileID: 11400000, guid: 287e2b681fc3243c6b97251a0297c7b2, type: 2}
+  initializeSuccessValue: {fileID: 0}
+  needSucessToComplete: 5
+  canReceiveReportDuringCompletion: 0

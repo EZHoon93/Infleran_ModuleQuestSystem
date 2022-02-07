@@ -4,6 +4,7 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
+using UnityEngine.Events;
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
@@ -69,6 +70,8 @@ public class Weapon : MonoBehaviour
     
     [Header("Visual Display")]
     public AmmoDisplay AmmoDisplay;
+
+    public UnityEvent onShoot;
 
     public bool triggerDown
     {
@@ -225,11 +228,14 @@ public class Weapon : MonoBehaviour
             for (int i = 0; i < advancedSettings.projectilePerShot; ++i)
             {
                 RaycastShot();
+                onShoot.Invoke();
             }
         }
         else
         {
             ProjectileShot();
+            onShoot.Invoke();
+
         }
     }
 
@@ -497,8 +503,10 @@ public class WeaponEditor : Editor
    SerializedProperty m_ReloadAudioClipProp;
    SerializedProperty m_PrefabRayTrailProp;
    SerializedProperty m_AmmoDisplayProp;
+    SerializedProperty m_onShoot;
 
-   void OnEnable()
+
+    void OnEnable()
    {
        m_TriggerTypeProp = serializedObject.FindProperty("triggerType");
        m_WeaponTypeProp = serializedObject.FindProperty("weaponType");
@@ -517,9 +525,11 @@ public class WeaponEditor : Editor
        m_ReloadAudioClipProp = serializedObject.FindProperty("ReloadAudioClip");
        m_PrefabRayTrailProp = serializedObject.FindProperty("PrefabRayTrail");
        m_AmmoDisplayProp = serializedObject.FindProperty("AmmoDisplay");
-   }
+       m_onShoot= serializedObject.FindProperty("onShoot");
 
-   public override void OnInspectorGUI()
+    }
+
+    public override void OnInspectorGUI()
     {
         serializedObject.Update();
         
@@ -550,6 +560,7 @@ public class WeaponEditor : Editor
         }
 
         EditorGUILayout.PropertyField(m_AmmoDisplayProp);
+        EditorGUILayout.PropertyField(m_onShoot);
 
         serializedObject.ApplyModifiedProperties();
     }
