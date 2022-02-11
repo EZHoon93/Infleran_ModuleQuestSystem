@@ -115,7 +115,7 @@ MonoBehaviour:
   m_MinSize: {x: 679, y: 492}
   m_MaxSize: {x: 14002, y: 14042}
   vertical: 0
-  controlID: 16
+  controlID: 58
 --- !u!114 &6
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -140,7 +140,7 @@ MonoBehaviour:
   m_MinSize: {x: 403, y: 492}
   m_MaxSize: {x: 10001, y: 14042}
   vertical: 1
-  controlID: 48
+  controlID: 59
 --- !u!114 &7
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -165,7 +165,7 @@ MonoBehaviour:
   m_MinSize: {x: 403, y: 221}
   m_MaxSize: {x: 8003, y: 4021}
   vertical: 0
-  controlID: 22
+  controlID: 60
 --- !u!114 &8
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -240,13 +240,13 @@ MonoBehaviour:
     height: 352
   m_MinSize: {x: 231, y: 271}
   m_MaxSize: {x: 10001, y: 10021}
-  m_ActualView: {fileID: 15}
+  m_ActualView: {fileID: 16}
   m_Panes:
   - {fileID: 15}
   - {fileID: 16}
   - {fileID: 17}
-  m_Selected: 0
-  m_LastSelected: 1
+  m_Selected: 1
+  m_LastSelected: 0
 --- !u!114 &11
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -266,8 +266,8 @@ MonoBehaviour:
     y: 0
     width: 533
     height: 939
-  m_MinSize: {x: 275, y: 50}
-  m_MaxSize: {x: 4000, y: 4000}
+  m_MinSize: {x: 276, y: 71}
+  m_MaxSize: {x: 4001, y: 4021}
   m_ActualView: {fileID: 18}
   m_Panes:
   - {fileID: 18}
@@ -395,9 +395,9 @@ MonoBehaviour:
   m_SceneHierarchy:
     m_TreeViewState:
       scrollPos: {x: 0, y: 0}
-      m_SelectedIDs: f27f0000
-      m_LastClickedID: 32754
-      m_ExpandedIDs: ba91ffff487f0000c27f00006c800000
+      m_SelectedIDs: 22390000
+      m_LastClickedID: 14626
+      m_ExpandedIDs: 36fbffff
       m_RenameOverlay:
         m_UserAcceptedRename: 0
         m_Name: 
@@ -450,16 +450,16 @@ MonoBehaviour:
   m_ShowContextualTools: 0
   m_WindowGUID: 31f482956bca24535bb6a66d3725841f
   m_Gizmos: 0
-  m_SceneIsLit: 0
+  m_SceneIsLit: 1
   m_SceneLighting: 1
-  m_2DMode: 1
+  m_2DMode: 0
   m_isRotationLocked: 0
   m_PlayAudio: 0
   m_AudioPlay: 0
   m_Position:
-    m_Target: {x: 500.5, y: 272.5, z: 0}
+    m_Target: {x: 25.84933, y: 11.853305, z: 26.52879}
     speed: 2
-    m_Value: {x: 500.5001, y: 272.50003, z: -0.000022625714}
+    m_Value: {x: 25.84933, y: 11.853305, z: 26.52879}
   m_RenderMode: 0
   m_CameraMode:
     drawMode: 0
@@ -505,18 +505,17 @@ MonoBehaviour:
     m_GridAxis: 1
     m_gridOpacity: 0.5
   m_Rotation:
-    m_Target: {x: 0, y: 0, z: 0, w: 1}
+    m_Target: {x: -0.1896154, y: -0.47853047, z: 0.10666191, w: -0.8506938}
     speed: 2
-    m_Value: {x: -0.000000023800677, y: -0.000000060065524, z: 0.000000013388288,
-      w: -1}
+    m_Value: {x: -0.18961519, y: -0.47852996, z: 0.1066618, w: -0.8506929}
   m_Size:
-    m_Target: 569.8741
+    m_Target: 12.818763
     speed: 2
-    m_Value: 569.874
+    m_Value: 12.818763
   m_Ortho:
-    m_Target: 1
+    m_Target: 0
     speed: 2
-    m_Value: 1
+    m_Value: 0
   m_CameraSettings:
     m_Speed: 1
     m_SpeedNormalized: 0.5
@@ -576,20 +575,20 @@ MonoBehaviour:
     m_SkipHidden: 0
     m_SearchArea: 1
     m_Folders:
-    - Assets/Creator Kit - FPS/Prefabs/UI
+    - Assets/TutorialInfo/Icons
   m_ViewMode: 1
   m_StartGridSize: 64
   m_LastFolders:
-  - Assets/Creator Kit - FPS/Prefabs/UI
+  - Assets/TutorialInfo/Icons
   m_LastFoldersGridSize: 64
   m_LastProjectPath: C:\Users\toon8\Desktop\MyUnity\GitH\Infleran_ModuleQuestSystem\Inflearn_ModuleQuestSystem
   m_LockTracker:
     m_IsLocked: 1
   m_FolderTreeState:
-    scrollPos: {x: 0, y: 58}
-    m_SelectedIDs: 3e520000
-    m_LastClickedID: 21054
-    m_ExpandedIDs: 00000000b84e0000ba4e0000bc4e0000be4e0000c04e0000164f000000ca9a3b
+    scrollPos: {x: 0, y: 313}
+    m_SelectedIDs: 70730000
+    m_LastClickedID: 29552
+    m_ExpandedIDs: 000000004a5000004c5000004e5000005050000052500000b4500000d250000000ca9a3b
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -617,7 +616,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: 
     m_LastClickedID: 0
-    m_ExpandedIDs: 00000000b84e0000ba4e0000bc4e0000be4e0000c04e0000
+    m_ExpandedIDs: 000000004a5000004c5000004e5000005050000052500000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -712,20 +711,20 @@ MonoBehaviour:
     m_SkipHidden: 0
     m_SearchArea: 1
     m_Folders:
-    - Assets/Prefabs/UI/Quest View
+    - Assets/Quests/Achievement
   m_ViewMode: 1
   m_StartGridSize: 96
   m_LastFolders:
-  - Assets/Prefabs/UI/Quest View
+  - Assets/Quests/Achievement
   m_LastFoldersGridSize: 96
   m_LastProjectPath: C:\Users\toon8\Desktop\MyUnity\GitH\Infleran_ModuleQuestSystem\Inflearn_ModuleQuestSystem
   m_LockTracker:
     m_IsLocked: 0
   m_FolderTreeState:
-    scrollPos: {x: 0, y: 127}
-    m_SelectedIDs: 244f0000
-    m_LastClickedID: 20260
-    m_ExpandedIDs: 00000000b84e0000ba4e0000bc4e0000be4e0000c04e0000304f000000ca9a3b
+    scrollPos: {x: 0, y: 185}
+    m_SelectedIDs: 68730000
+    m_LastClickedID: 29544
+    m_ExpandedIDs: 000000004a5000004c5000004e5000005050000052500000b4500000c4500000ce500000d250000000ca9a3b
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -753,7 +752,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: 
     m_LastClickedID: 0
-    m_ExpandedIDs: 00000000b84e0000ba4e0000bc4e0000be4e0000c04e0000
+    m_ExpandedIDs: 000000004a5000004c5000004e5000005050000052500000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -797,7 +796,7 @@ MonoBehaviour:
       m_IsRenaming: 0
       m_OriginalEventType: 11
       m_IsRenamingFilename: 1
-      m_ClientGUIView: {fileID: 11}
+      m_ClientGUIView: {fileID: 10}
     m_CreateAssetUtility:
       m_EndAction: {fileID: 0}
       m_InstanceID: 0
@@ -925,7 +924,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: 345f0000
     m_LastClickedID: 24372
-    m_ExpandedIDs: 00000000b84e0000ba4e0000bc4e0000be4e0000c04e0000
+    m_ExpandedIDs: 000000004a5000004c5000004e5000005050000052500000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -953,7 +952,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: 
     m_LastClickedID: 0
-    m_ExpandedIDs: 00000000b84e0000ba4e0000bc4e0000be4e0000c04e0000
+    m_ExpandedIDs: 000000004a5000004c5000004e5000005050000052500000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 

@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 97daff65ea3444f85acbbf4b18616d4e, type: 3}
+  m_Name: Achivement_Kill The Normal Germ Slime5
+  m_EditorClassIdentifier: 
+  category: {fileID: 11400000, guid: 1b6b025e10c24465cabeba87ef7c6c11, type: 2}
+  icon: {fileID: 21300000, guid: 508303af6d2f46a4aac6b9ae13339531, type: 3}
+  codeName: KILL_THE_NORMAL_GERM_SLIME_5
+  displayName: Kill the normal germ slmie
+  description: you have to kill the normal germ slime
+  taskGroups:
+  - tasks:
+    - {fileID: 11400000, guid: 5023ca28a342346c8abe9b57aa451c55, type: 2}
+  rewards:
+  - {fileID: 11400000, guid: 6ca56c970ac0b412baad71341500b1cc, type: 2}
+  useAutoComplete: 1
+  isCancelable: 0
+  isSavable: 1
+  acceptionConditions: []
+  cancelConditions: []
